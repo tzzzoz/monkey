@@ -1,9 +1,24 @@
 What is
-============
+=======
 
-SpiderMonkey binding for go.
+This package is SpiderMonkey wrapper for Go.
 
-Just newborn, use in production enviroment at your own risk!
+You can use this package to embed JavaScript into your Go program.
+
+This package just newborn, use in production enviroment at your own risk!
+
+Why make
+========
+
+You can found "go-v8" or "gomonkey" project on the github.
+
+Thy have same purpose: Embed JavaScript into Golang program, make it more dynamic.
+
+But I found all of existing projects are not powerful enough.
+
+For example "go-v8" use JSON to pass data between Go and JavaScript, each callback has a significant performance cost.
+
+So I make one by myself.
 
 Install
 =======
