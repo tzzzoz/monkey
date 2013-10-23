@@ -10,24 +10,23 @@ func main() {
 		panic(err1)
 	}
 
-	// Register Error Reporter
-	runtime.SetErrorReporter(func(report *js.ErrorReport) {
-		println(fmt.Sprintf(
-			"%s:%d: %s",
-			report.FileName, report.LineNum, report.Message,
-		))
-		if report.LineBuf != "" {
-			println("\t", report.LineBuf)
-		}
-	})
-
 	// Evaluate Script
 	if value, err := runtime.Eval("'Hello ' + 'World!'"); err == nil {
 		println(value.ToString())
 	}
 
-	// Built-in Functions
-	runtime.Eval("println('Hello World!')")
+	// Built-in Function
+	runtime.Eval("println('Hello Built-in Function!')")
+
+	// Compile Once, Run Many Times
+	if script, err := runtime.Compile(
+		"println('Hello Compiler!')",
+		"<no name>", 0,
+	); err == nil {
+		script.Execute()
+		script.Execute()
+		script.Execute()
+	}
 
 	// Define Function
 	if err := runtime.DefineFunction("add",
@@ -43,12 +42,18 @@ func main() {
 		}
 	}
 
-	// Compile Script
-	if script, err := runtime.Compile("add(1,2)", "<no name>", 0); err == nil {
-		script.Execute()
-	}
+	// Error Handle
+	runtime.SetErrorReporter(func(report *js.ErrorReport) {
+		println(fmt.Sprintf(
+			"%s:%d: %s",
+			report.FileName, report.LineNum, report.Message,
+		))
+		if report.LineBuf != "" {
+			println("\t", report.LineBuf)
+		}
+	})
 
-	// Script Error
+	// Trigger An Error
 	runtime.Eval("abc()")
 
 	// Say Good Bye

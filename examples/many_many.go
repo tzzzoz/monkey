@@ -15,7 +15,7 @@ func main() {
 
 	wg := new(sync.WaitGroup)
 
-	// Evaluate Script By Many Goroutines
+	// One Runtime Instance Used By Many Goroutines
 	for i := 0; i < 100; i++ {
 		wg.Add(1)
 		go func() {
