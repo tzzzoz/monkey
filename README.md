@@ -107,10 +107,11 @@ package main
 
 import js "github.com/realint/monkey"
 
-func assert(c bool) {
+func assert(c bool) bool {
 	if !c {
 		panic("assert failed")
 	}
+	return c
 }
 
 func main() {
@@ -121,19 +122,19 @@ func main() {
 	}
 
 	// String
-	if value, err := runtime.Eval("'abc'"); err == nil {
+	if value, err := runtime.Eval("'abc'"); assert(err == nil) {
 		assert(value.IsString())
 		assert(value.String() == "abc")
 	}
 
 	// Int
-	if value, err := runtime.Eval("123456789"); err == nil {
+	if value, err := runtime.Eval("123456789"); assert(err == nil) {
 		assert(value.IsInt())
 		assert(value.Int() == 123456789)
 	}
 
 	// Number
-	if value, err := runtime.Eval("12345.6789"); err == nil {
+	if value, err := runtime.Eval("12345.6789"); assert(err == nil) {
 		assert(value.IsNumber())
 		assert(value.Number() == 12345.6789)
 	}
@@ -149,10 +150,11 @@ package main
 
 import js "github.com/realint/monkey"
 
-func assert(c bool) {
+func assert(c bool) bool {
 	if !c {
 		panic("assert failed")
 	}
+	return c
 }
 
 func main() {
@@ -162,8 +164,8 @@ func main() {
 		panic(err1)
 	}
 
-	// Object
-	if value, err := runtime.Eval("x={a:123}"); err == nil {
+	// Return Object From JavaScript
+	if value, err := runtime.Eval("x={a:123}"); assert(err == nil) {
 		// Type Check
 		assert(value.IsObject())
 		obj := value.Object()
@@ -182,6 +184,34 @@ func main() {
 		assert(value2.Int() == 456)
 	}
 
+	// Return Object From Go
+	if err := runtime.DefineFunction("get_data",
+		func(argv []js.Value) (js.Value, bool) {
+			array := runtime.NewObject()
+			array.SetProperty("abc", runtime.Int(100))
+			array.SetProperty("def", runtime.Int(200))
+			return array.ToValue(), true
+		},
+	); err == nil {
+		if value, err := runtime.Eval("get_data()"); assert(err == nil) {
+			// Type Check
+			assert(value.IsObject())
+			obj := value.Object()
+
+			// Get Property 'abc'
+			value1, ok1 := obj.GetProperty("abc")
+			assert(ok1)
+			assert(value1.IsInt())
+			assert(value1.Int() == 100)
+
+			// Get Property 'def'
+			value2, ok2 := obj.GetProperty("def")
+			assert(ok2)
+			assert(value2.IsInt())
+			assert(value2.Int() == 200)
+		}
+	}
+
 	runtime.Dispose()
 }
 ```
@@ -192,10 +222,11 @@ package main
 
 import js "github.com/realint/monkey"
 
-func assert(c bool) {
+func assert(c bool) bool {
 	if !c {
 		panic("assert failed")
 	}
+	return c
 }
 
 func main() {
@@ -205,8 +236,8 @@ func main() {
 		panic(err1)
 	}
 
-	// Array
-	if value, err := runtime.Eval("[123, 456]"); err == nil {
+	// Return Array From JavaScript
+	if value, err := runtime.Eval("[123, 456]"); assert(err == nil) {
 		// Type Check
 		assert(value.IsObject())
 		obj := value.Object()
@@ -237,6 +268,36 @@ func main() {
 		assert(obj.GetArrayLength() == 3)
 	}
 
+	// Return Array From Go
+	if err := runtime.DefineFunction("get_data",
+		func(argv []js.Value) (js.Value, bool) {
+			array := runtime.NewArray()
+			array.SetElement(0, runtime.Int(100))
+			array.SetElement(1, runtime.Int(200))
+			return array.ToValue(), true
+		},
+	); err == nil {
+		if value, err := runtime.Eval("get_data()"); assert(err == nil) {
+			// Type Check
+			assert(value.IsObject())
+			obj := value.Object()
+			assert(obj.IsArray())
+			assert(obj.GetArrayLength() == 2)
+
+			// Get First Item
+			value1, ok1 := obj.GetElement(0)
+			assert(ok1)
+			assert(value1.IsInt())
+			assert(value1.Int() == 100)
+
+			// Get Second Item
+			value2, ok2 := obj.GetElement(1)
+			assert(ok2)
+			assert(value2.IsInt())
+			assert(value2.Int() == 200)
+		}
+	}
+
 	runtime.Dispose()
 }
 ```
@@ -248,10 +309,11 @@ package main
 
 import js "github.com/realint/monkey"
 
-func assert(c bool) {
+func assert(c bool) bool {
 	if !c {
 		panic("assert failed")
 	}
+	return c
 }
 
 func main() {
@@ -262,7 +324,7 @@ func main() {
 	}
 
 	// Function
-	if value, err := runtime.Eval("function(a,b,c){ return a+b+c; }"); err == nil {
+	if value, err := runtime.Eval("function(a,b,c){ return a+b+c; }"); assert(err == nil) {
 		// Type Check
 		assert(value.IsFunction())
 

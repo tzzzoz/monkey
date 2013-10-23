@@ -248,6 +248,10 @@ func (r *Runtime) NewArray() Object {
 	return Object{r, C.JS_NewArrayObject(r.cx, 0, nil)}
 }
 
+func (r *Runtime) NewObject() Object {
+	return Object{r, C.JS_NewObject(r.cx, nil, nil, nil)}
+}
+
 // Compiled Script
 type Script struct {
 	runtime   *Runtime
@@ -490,4 +494,8 @@ func (o Object) SetProperty(name string, v Value) bool {
 		return true
 	}
 	return false
+}
+
+func (o Object) ToValue() Value {
+	return Value{o.runtime, C.OBJECT_TO_JSVAL(o.obj)}
 }

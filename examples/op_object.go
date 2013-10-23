@@ -2,10 +2,11 @@ package main
 
 import js "github.com/realint/monkey"
 
-func assert(c bool) {
+func assert(c bool) bool {
 	if !c {
 		panic("assert failed")
 	}
+	return c
 }
 
 func main() {
@@ -15,8 +16,8 @@ func main() {
 		panic(err1)
 	}
 
-	// Object
-	if value, err := runtime.Eval("x={a:123}"); err == nil {
+	// Return Object From JavaScript
+	if value, err := runtime.Eval("x={a:123}"); assert(err == nil) {
 		// Type Check
 		assert(value.IsObject())
 		obj := value.Object()
@@ -33,6 +34,34 @@ func main() {
 		assert(ok2)
 		assert(value2.IsInt())
 		assert(value2.Int() == 456)
+	}
+
+	// Return Object From Go
+	if err := runtime.DefineFunction("get_data",
+		func(argv []js.Value) (js.Value, bool) {
+			array := runtime.NewObject()
+			array.SetProperty("abc", runtime.Int(100))
+			array.SetProperty("def", runtime.Int(200))
+			return array.ToValue(), true
+		},
+	); err == nil {
+		if value, err := runtime.Eval("get_data()"); assert(err == nil) {
+			// Type Check
+			assert(value.IsObject())
+			obj := value.Object()
+
+			// Get Property 'abc'
+			value1, ok1 := obj.GetProperty("abc")
+			assert(ok1)
+			assert(value1.IsInt())
+			assert(value1.Int() == 100)
+
+			// Get Property 'def'
+			value2, ok2 := obj.GetProperty("def")
+			assert(ok2)
+			assert(value2.IsInt())
+			assert(value2.Int() == 200)
+		}
 	}
 
 	runtime.Dispose()

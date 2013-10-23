@@ -2,10 +2,11 @@ package main
 
 import js "github.com/realint/monkey"
 
-func assert(c bool) {
+func assert(c bool) bool {
 	if !c {
 		panic("assert failed")
 	}
+	return c
 }
 
 func main() {
@@ -16,7 +17,7 @@ func main() {
 	}
 
 	// Function
-	if value, err := runtime.Eval("function(a,b,c){ return a+b+c; }"); err == nil {
+	if value, err := runtime.Eval("function(a,b,c){ return a+b+c; }"); assert(err == nil) {
 		// Type Check
 		assert(value.IsFunction())
 
