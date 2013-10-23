@@ -39,10 +39,10 @@ func main() {
 	// Return Object From Go
 	if err := runtime.DefineFunction("get_data",
 		func(argv []js.Value) (js.Value, bool) {
-			array := runtime.NewObject()
-			array.SetProperty("abc", runtime.Int(100))
-			array.SetProperty("def", runtime.Int(200))
-			return array.ToValue(), true
+			obj := runtime.NewObject()
+			obj.SetProperty("abc", runtime.Int(100))
+			obj.SetProperty("def", runtime.Int(200))
+			return obj.ToValue(), true
 		},
 	); err == nil {
 		if value, err := runtime.Eval("get_data()"); assert(err == nil) {
