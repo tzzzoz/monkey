@@ -17,7 +17,7 @@ func main() {
 	}
 
 	// Function
-	if value, err := runtime.Eval("function(a,b,c){ return a+b+c; }"); assert(err == nil) {
+	if value, err := runtime.Eval("function(a,b){ return a+b; }"); assert(err == nil) {
 		// Type Check
 		assert(value.IsFunction())
 
@@ -25,13 +25,12 @@ func main() {
 		value1, ok1 := value.Call([]js.Value{
 			runtime.Int(10),
 			runtime.Int(20),
-			runtime.Int(30),
 		})
 
 		// Result Check
 		assert(ok1)
 		assert(value1.IsNumber())
-		assert(value1.Int() == 60)
+		assert(value1.Int() == 30)
 	}
 
 	runtime.Dispose()
