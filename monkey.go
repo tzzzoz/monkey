@@ -1,6 +1,6 @@
 package gomonkey
 
-// CGO_LDFLAGS="-L /usr/local/Cellar/spidermonkey/1.8.5/lib/ -lmozjs185.1.0" go install github.com/realint/gomonkey
+// CGO_LDFLAGS="-L /usr/local/Cellar/spidermonkey/1.8.5/lib/ -lmozjs185.1.0" go install github.com/realint/monkey
 
 /*
 #include "js/jsapi.h"

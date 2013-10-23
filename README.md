@@ -10,14 +10,24 @@ Install
 
 Mac OS X:
 
-    brew install spidermonkey
-    export CGO_LDFLAGS="-L /usr/local/Cellar/spidermonkey/1.8.5/lib/ -lmozjs185.1.0"
-    go get github.com/realint/monkey
+```
+brew install spidermonkey
+export CGO_LDFLAGS="-L /usr/local/Cellar/spidermonkey/1.8.5/lib/ -lmozjs185.1.0"
+go get github.com/realint/monkey
+```
+
+Ubuntu:
+
+```
+sudo apt-get install libmozjs185-dev
+sudo apt-get install build-essential
+CGO_LDFLAGS="-lmozjs185" go get github.com/realint/monkey
+```
 
 Examples
 ========
 
-All the example codes can be found in examples folder.
+All the example codes can be found in "examples" folder.
 
 Maybe you need this to fix CGO problem:
 
