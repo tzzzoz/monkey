@@ -8,20 +8,26 @@ Just newborn, use in production enviroment at your own risk!
 Install
 =======
 
+You need install SpiderMonkey first.
+
 Mac OS X:
 
 ```
 brew install spidermonkey
-export CGO_LDFLAGS="-L /usr/local/Cellar/spidermonkey/1.8.5/lib/ -lmozjs185.1.0"
-go get github.com/realint/monkey
 ```
 
 Ubuntu:
 
 ```
 sudo apt-get install libmozjs185-dev
-sudo apt-get install build-essential
-CGO_LDFLAGS="-lmozjs185" go get github.com/realint/monkey
+```
+
+Or compile by yourself ([reference](https://developer.mozilla.org/en-US/docs/SpiderMonkey/Build_Documentation)). 
+
+And then install Monkey by "go get" command.
+
+```
+go get github.com/realint/monkey
 ```
 
 Examples
@@ -29,9 +35,11 @@ Examples
 
 All the example codes can be found in "examples" folder.
 
-Maybe you need this to fix CGO problem:
+You can run all of the example codes like this:
 
-    export CGO_LDFLAGS="-L /usr/local/Cellar/spidermonkey/1.8.5/lib/ -lmozjs185.1.0"
+```
+go run examples/hello_world.go
+```
 
 The "hello\_world.go" shows what Monkey can do.
 

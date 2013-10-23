@@ -1,8 +1,9 @@
 package gomonkey
 
-// CGO_LDFLAGS="-L /usr/local/Cellar/spidermonkey/1.8.5/lib/ -lmozjs185.1.0" go install github.com/realint/monkey
-
 /*
+#cgo linux  LDFLAGS: -lmozjs185
+#cgo darwin LDFLAGS: -lmozjs185
+
 #include "js/jsapi.h"
 
 extern JSClass global_class;
